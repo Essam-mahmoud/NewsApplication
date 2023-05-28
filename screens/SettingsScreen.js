@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Switch, useColorScheme } from "react-native";
+import React, { useState, useContext } from "react";
+import { View, Text, StyleSheet, Switch } from "react-native";
+import { EventRegister } from "react-native-event-listeners";
 
 function SettingsScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -7,10 +8,6 @@ function SettingsScreen() {
 
   const handlLanguageToggle = () => {
     setNotificationsEnabled(!notificationsEnabled);
-  };
-
-  const handleDarkModeToggle = () => {
-    setDarkModeEnabled(!darkModeEnabled);
   };
 
   return (
@@ -24,7 +21,13 @@ function SettingsScreen() {
       </View>
       <View style={styles.itemContainer}>
         <Text style={styles.itemTitle}>Dark Mode</Text>
-        <Switch value={darkModeEnabled} onValueChange={handleDarkModeToggle} />
+        <Switch
+          value={darkModeEnabled}
+          onValueChange={(value) => {
+            setDarkModeEnabled(value);
+            EventRegister.emit("ChangeTheme", value);
+          }}
+        />
       </View>
     </View>
   );
@@ -34,6 +37,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    padding: 10,
+  },
+  darkMode: {
+    flex: 1,
+    backgroundColor: "black",
     padding: 10,
   },
   itemContainer: {

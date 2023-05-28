@@ -8,7 +8,6 @@ function NewsDetailsScreen({ route }) {
     <ScrollView style={styles.container}>
       <Image
         style={styles.image}
-        resizeMode="cover"
         source={{
           uri: urlToImage,
         }}

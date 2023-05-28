@@ -1,9 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DarkTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
+import { EventRegister } from "react-native-event-listeners";
+import { useState, useEffect } from "react";
 
 import HomeScreen from "./screens/HomeScreen";
 import SettingsScreen from "./screens/SettingsScreen";
@@ -52,6 +54,16 @@ function NewsBottomTabs() {
 }
 
 export default function App() {
+  const [darkMode, setDarkMode] = useState(false);
+  useEffect(() => {
+    const listener = EventRegister.addEventListener("ChangeTheme", (data) => {
+      setDarkMode(data);
+      console.log(data);
+    });
+    return () => {
+      EventRegister.removeAllListeners(listener);
+    };
+  }, [darkMode]);
   return (
     <>
       <StatusBar style="light" />
@@ -68,7 +80,9 @@ export default function App() {
             name="NewsDetails"
             component={NewsDetailsScreen}
             options={{
-              headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+              headerStyle: {
+                backgroundColor: GlobalStyles.colors.primary500,
+              },
               headerTintColor: "white",
             }}
           />
